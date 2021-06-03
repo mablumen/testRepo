@@ -1,0 +1,28 @@
+{
+	"name": "powerquery1",
+	"properties": {
+		"type": "WranglingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"name": "EmployeeInfoCSV",
+					"script": "source(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~>  EmployeeInfoCSV",
+					"dataset": {
+						"referenceName": "EmployeeInfoCSV",
+						"type": "DatasetReference"
+					}
+				},
+				{
+					"name": "EmployeeSalaryCSV",
+					"script": "source(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~>  EmployeeSalaryCSV",
+					"dataset": {
+						"referenceName": "EmployeeSalaryCSV",
+						"type": "DatasetReference"
+					}
+				}
+			],
+			"sinks": [],
+			"script": "section Section1;\r\nshared EmployeeInfoCSV = let\r\n  AdfDoc = AzureStorage.BlobContents(\"https://nnarateststore.blob.core.windows.net/empstore/EmployeeInfo.csv\"),\r\n  Csv = Csv.Document(AdfDoc, [Delimiter = \",\", Encoding = TextEncoding.Utf8, QuoteStyle = QuoteStyle.Csv])\r\nin\r\n  Csv;\r\nshared EmployeeSalaryCSV = let\r\n  AdfDoc = AzureStorage.BlobContents(\"https://nnarateststore.blob.core.windows.net/empstore/EmployeeSalary.csv\"),\r\n  Csv = Csv.Document(AdfDoc, [Delimiter = \",\", Encoding = TextEncoding.Utf8, QuoteStyle = QuoteStyle.Csv])\r\nin\r\n  Csv;\r\nshared UserQuery = let\r\n  Source = EmployeeInfoCSV\r\nin\r\n  Source;\r\n"
+		}
+	}
+}
