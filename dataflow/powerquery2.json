@@ -3,8 +3,18 @@
 	"properties": {
 		"type": "WranglingDataFlow",
 		"typeProperties": {
-			"sources": [],
-			"sinks": []
+			"sources": [
+				{
+					"name": "EmployeeSalaryCSV",
+					"script": "source(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~>  EmployeeSalaryCSV",
+					"dataset": {
+						"referenceName": "EmployeeSalaryCSV",
+						"type": "DatasetReference"
+					}
+				}
+			],
+			"sinks": [],
+			"script": "section Section1;\r\nshared EmployeeSalaryCSV = let\r\n  AdfDoc = AzureStorage.BlobContents(\"https://nnarateststore.blob.core.windows.net/empstore/EmployeeSalary.csv\"),\r\n  Csv = Csv.Document(AdfDoc, [Delimiter = \",\", Encoding = TextEncoding.Utf8, QuoteStyle = QuoteStyle.Csv])\r\nin\r\n  Csv;\r\nshared UserQuery = let\r\n  Source = EmployeeSalaryCSV\r\nin\r\n  Source;\r\n"
 		}
 	}
 }
