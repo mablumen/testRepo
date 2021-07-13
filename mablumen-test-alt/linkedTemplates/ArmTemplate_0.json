@@ -208,6 +208,31 @@
 				"[concat(variables('factoryId'), '/datasets/EmployeeInfoCSV')]",
 				"[concat(variables('factoryId'), '/datasets/EmployeeSalaryCSV')]"
 			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/powerquery2')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "WranglingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"name": "EmployeeSalaryCSV",
+							"script": "source(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> EmployeeSalaryCSV",
+							"dataset": {
+								"referenceName": "EmployeeSalaryCSV",
+								"type": "DatasetReference"
+							}
+						}
+					],
+					"sinks": [],
+					"script": "section Section1;\r\nshared EmployeeSalaryCSV = let\r\n  AdfDoc = AzureStorage.BlobContents(\"https://nnarateststore.blob.core.windows.net/empstore/EmployeeSalary.csv\"),\r\n  Csv = Csv.Document(AdfDoc, [Delimiter = \",\", Encoding = TextEncoding.Utf8, QuoteStyle = QuoteStyle.Csv])\r\nin\r\n  Csv;\r\nshared UserQuery = let\r\n  Source = EmployeeSalaryCSV\r\nin\r\n  Source;\r\n"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/EmployeeSalaryCSV')]"
+			]
 		}
 	]
 }
