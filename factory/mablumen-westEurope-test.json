@@ -1,0 +1,9 @@
+{
+	"name": "mablumen-westEurope-test",
+	"location": "westeurope",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "e7f4aad7-6a7f-4a05-8640-58cbe9edc4b7",
+		"tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47"
+	}
+}
