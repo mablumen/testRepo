@@ -14,7 +14,14 @@
 			{
 				"name": "ForEach1",
 				"type": "ForEach",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "Wait1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
@@ -23,7 +30,7 @@
 					},
 					"activities": [
 						{
-							"name": "Wait1",
+							"name": "Wait2",
 							"type": "Wait",
 							"dependsOn": [],
 							"userProperties": [],
